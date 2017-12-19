@@ -70,10 +70,7 @@ def get_non_sponsored_jobs(url):
     jobs = []
     keywords = set(['software','developer','engineer','engineering'])
     for result in non_sponsored_result:
-        try:
-            job = get_job(result)
-        except:
-            continue
+        job = get_job(result)
 
         found = False
         for keyword in keywords:
@@ -96,7 +93,7 @@ def print_jobs(jobs):
 
 # Parse the soup
 jobs = []
-for k, i in enumerate(range(0,200, 10)):
+for k, i in enumerate(range(0,500, 10)):
     # url = 'https://www.indeed.com/jobs?q=software+intern&l=United+States&sort=date&start=' + str(i)
     url = 'https://www.indeed.com/jobs?q=computer+science+intern&l=United+States&sort=date&start=' + str(i)
     # url = 'https://www.indeed.com/jobs?q=computer+science+intern&l=San+Francisco%2C+CA&radius=100&sort=date&start=' + str(i)

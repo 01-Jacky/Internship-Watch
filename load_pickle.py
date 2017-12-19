@@ -11,16 +11,21 @@ class Job:
         self.url = 'https://www.indeed.com' + url
 
     def __str__(self):
-        return '{:<40} {:<50} {:<40} {}'.format(self.company, self.title, self.location, self.date)
+        google_link = 'https://www.google.com/search?q={}'.format('+'.join(self.company.split() + ["intern", "salary"]))
+        return '{:<35} {:<50} {:<35} {:<15} {:<70} {}'.format(
+            self.company, self.title[:45], self.location[:30], self.date, google_link, self.url)
 
 
 def print_jobs(jobs):
+    jobs = sorted(jobs, key=lambda job : job.company.lower())
+    jobs = sorted(jobs, key=lambda job : job.location.lower())
+    # jobs = sorted(jobs, key=lambda job : job.date.lower())
+
     for k, job in enumerate(jobs):
-        print('{}: {}'.format(k, job))
+        print('{:<2}: {}'.format(k, job))
     print()
 
-    for k, job in enumerate(jobs):
-        print('{}: {}'.format(k, job.url))
 
-jobs = pickle.load( open( "data_dump/jobs_2017-11-14_1337.p", "rb" ) )
+
+jobs = pickle.load( open( "data_dump/jobs_2017-12-17_2139.p", "rb" ) )
 print_jobs(jobs)
