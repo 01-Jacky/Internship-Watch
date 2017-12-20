@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Fresh CS Internships</title>
+    <!--<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">-->
+
+    <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/pure-min.css" integrity="sha384-nn4HPE8lTHyVtfCBi5yW9d20FjT8BJwUXyWZT9InLYax14RDjBj46LmSztkmNP9w" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/results.css') }}">
+
+    <!--<script src="https://code.jquery.com/jquery-1.12.4.js"></script>-->
+    <!--<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">-->
+    <!--<script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>-->
+
+    <style>
+        table {
+            margin: 25px auto;
+        }
+        td{
+            padding: 0px 0px;
+        }
+    </style>
+
+</head>
+<body>
+    <table id="results" class="pure-table">
+    <thead>
+        <tr>
+        <th>Company</th>
+        <th>Title</th>
+        <th>Location</th>
+        <th>Date</th>
+        <th>Glassdoor</th>
+        <th>Posting</th>
+        </tr>
+    </thead>
+    {% for job in jobs_arr %}
+        <tr>
+            <td>{{ job.company }}</td>
+            <td>{{ job.title[:35] }}</td>
+            <td>{{ job.location[:30] }}</td>
+            <td>{{ job.date }}</td>
+            <td>
+                <a href="{{ 'https://www.google.com/search?q={}'.format('+'.join(job.company.split() + ["intern", "salary"])) }}">Salary</a></td>
+            <td><a href="{{ job.url }}">Posting</a></td>
+        </tr>
+    {% endfor %}
+    </table>
+
+</body>
+</html>
+
+
+
