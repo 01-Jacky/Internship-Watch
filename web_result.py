@@ -1,13 +1,34 @@
+"""
+In shell:
+set FLASK_APP=web_result.py
+flask run
+"""
+
 from flask import Flask
 from flask import render_template
 import pickle
+from os import listdir
+from os.path import isfile, join
+
+from dal import db
 
 app = Flask(__name__)
+print(foo.bar)
 
 @app.route("/")
 def hello(data=None):
+
     # Load the dictionary back from the pickle file.
-    jobs = pickle.load(open("data_dump/jobs_2017-12-19_2258.p", "rb"))
+    # jobs = pickle.load(open("data_dump/jobs_2017-12-24_0132.p", "rb"))
+    # latest_file = ''
+    # path = 'data_dump/'
+    # for f in listdir(path):
+    #     if isfile(join(path, f)) and f > latest_file:
+    #         latest_file = path + f
+    # jobs = pickle.load(open(latest_file, "rb"))
+    # print(latest_file)
+
+    jobs = db.get_jobs()
 
     # discard >30 days
     fresh_jobs = [job for job in jobs if job.date != '30+ days ago']

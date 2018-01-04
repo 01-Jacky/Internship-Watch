@@ -1,7 +1,26 @@
-table{
+.table-area, header{
     margin: 25px 25px;
 }
 
+h1{
+    text-align: center
+}
+
+table {
+    margin: 25px 25px;
+}
 td{
     padding: 0px 0px;
 }
+
+thead tr th:first-child, tbody tr td:first-child {
+  width: 15em;
+  min-width: 15em;
+  max-width: 15em;
+}
+
+/*thead tr th:nth-child(2), tbody tr td:nth-child(2) {*/
+  /*width: 15em;*/
+  /*min-width: 15em;*/
+  /*max-width: 15em;*/
+/*}*/
