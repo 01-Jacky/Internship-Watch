@@ -40,10 +40,23 @@ def print_jobs(jobs):
 # Parse the soup
 if __name__ == '__main__':
     jobs = []
-    for k, i in enumerate(range(0,20, 10)):
-        # url = 'https://www.indeed.com/jobs?q=software+intern&l=United+States&sort=date&start=' + str(i)
+    NUM_JOBS_CRAWLED = 300
+    for k, i in enumerate(range(0,NUM_JOBS_CRAWLED, 10)):
+        url = 'https://www.indeed.com/jobs?q=software+intern&l=United+States&sort=date&start=' + str(i)
         # url = 'https://www.indeed.com/jobs?q=computer+science+intern&l=United+States&sort=date&start=' + str(i)
-        url = 'https://www.indeed.com/jobs?q=software+intern&l=United+States&start=' + str(i)
+        # url = 'https://www.indeed.com/jobs?q=software+intern&l=United+States&start=' + str(i)
+        # url = 'https://www.indeed.com/jobs?q=computer+science+intern&l=United+States&start=' + str(i)
+        # url = 'https://www.indeed.com/jobs?q=computer+science+intern&l=San+Francisco%2C+CA&radius=100&sort=date&start=' + str(i)
+
+        print('Scraping page ' + str(k + 1))
+        html = lib.downloader.get_html(url)
+        jobs.extend(lib.parser.parse_non_sponsored_jobs(html))
+        time.sleep(random.uniform(0.5,1.5))
+
+    for k, i in enumerate(range(0,NUM_JOBS_CRAWLED, 10)):
+        # url = 'https://www.indeed.com/jobs?q=software+intern&l=United+States&sort=date&start=' + str(i)
+        url = 'https://www.indeed.com/jobs?q=computer+science+intern&l=United+States&sort=date&start=' + str(i)
+        # url = 'https://www.indeed.com/jobs?q=software+intern&l=United+States&start=' + str(i)
         # url = 'https://www.indeed.com/jobs?q=computer+science+intern&l=United+States&start=' + str(i)
         # url = 'https://www.indeed.com/jobs?q=computer+science+intern&l=San+Francisco%2C+CA&radius=100&sort=date&start=' + str(i)
 
@@ -60,9 +73,12 @@ if __name__ == '__main__':
     pickle.dump(jobs, open(picke_name, "wb" ))
     print_jobs(jobs)
 
+
     # Save job to db
     dynamodb = boto3.resource('dynamodb', region_name='us-west-2', endpoint_url="https://dynamodb.us-west-2.amazonaws.com")
     table = dynamodb.Table('JobInternships')
+    exist_count = 0
+    insert_count = 0
 
     for job in jobs:
         jobid = job.company.replace(' ', '') + '_' + job.title.replace(' ','')
@@ -78,9 +94,9 @@ if __name__ == '__main__':
             print(e.response['Error']['Message'])
         else:
             if 'Item' in response:                      # If item exist
-                print('Item already exist')
+                exist_count += 1
             else:                                       # If not insert it
-                print('Inserting...')
+                insert_count += 1
                 response = table.put_item(
                     Item={
                         'date': job.date,
@@ -91,8 +107,10 @@ if __name__ == '__main__':
                         'url': job.url,
                     }
                 )
-                # print("PutItem succeeded:")
-                # print(json.dumps(response, indent=4, cls=DecimalEncoder))
+            # print(json.dumps(response, indent=4, cls=DecimalEncoder))
+
+    print("dups: {}".format(exist_count))
+    print("inserted: {}".format(insert_count))
 
 
 

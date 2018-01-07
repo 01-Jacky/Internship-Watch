@@ -19,8 +19,8 @@ thead tr th:first-child, tbody tr td:first-child {
   max-width: 15em;
 }
 
-/*thead tr th:nth-child(2), tbody tr td:nth-child(2) {*/
+thead tr th:nth-child(2), tbody tr td:nth-child(2) {
   /*width: 15em;*/
   /*min-width: 15em;*/
-  /*max-width: 15em;*/
-/*}*/
+  max-width: 25em;
+}

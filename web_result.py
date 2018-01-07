@@ -13,7 +13,6 @@ from os.path import isfile, join
 from dal import db
 
 app = Flask(__name__)
-print(foo.bar)
 
 @app.route("/")
 def hello(data=None):
@@ -31,10 +30,10 @@ def hello(data=None):
     jobs = db.get_jobs()
 
     # discard >30 days
-    fresh_jobs = [job for job in jobs if job.date != '30+ days ago']
+    fresh_jobs = [job for job in jobs]
 
-    fresh_jobs = sorted(fresh_jobs, key=lambda job: job.location.lower())
-    fresh_jobs = sorted(fresh_jobs, key=lambda job: job.company.lower())
+    fresh_jobs = sorted(fresh_jobs, key=lambda job: job['location'].lower())
+    fresh_jobs = sorted(fresh_jobs, key=lambda job: job['company'].lower())
     # jobs = sorted(jobs, key=lambda job : job.date.lower())
 
     return render_template('results.html', jobs_arr=fresh_jobs)
