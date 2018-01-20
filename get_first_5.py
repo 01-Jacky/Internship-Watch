@@ -1,9 +1,8 @@
 import time
 import pickle
-import datetime
 import random
 import os
-from bs4 import BeautifulSoup
+from datetime import datetime, timedelta
 
 
 from lib.job import Job
@@ -16,6 +15,7 @@ import json
 import decimal
 from botocore.exceptions import ClientError
 
+# TODO - log out scrapped from which keyword.
 
 # Helper class to convert a DynamoDB item to JSON.
 class DecimalEncoder(json.JSONEncoder):
@@ -40,11 +40,11 @@ def print_jobs(jobs):
 # Parse the soup
 if __name__ == '__main__':
     jobs = []
-    NUM_JOBS_CRAWLED = 300
+    NUM_JOBS_CRAWLED = 200      # 10 non-sponsored postings per page
     for k, i in enumerate(range(0,NUM_JOBS_CRAWLED, 10)):
         url = 'https://www.indeed.com/jobs?q=software+intern&l=United+States&sort=date&start=' + str(i)
         # url = 'https://www.indeed.com/jobs?q=computer+science+intern&l=United+States&sort=date&start=' + str(i)
-        # url = 'https://www.indeed.com/jobs?q=software+intern&l=United+States&start=' + str(i)
+        # url = 'https://www.indeed.com/joqqbs?q=software+intern&l=United+States&start=' + str(i)
         # url = 'https://www.indeed.com/jobs?q=computer+science+intern&l=United+States&start=' + str(i)
         # url = 'https://www.indeed.com/jobs?q=computer+science+intern&l=San+Francisco%2C+CA&radius=100&sort=date&start=' + str(i)
 
@@ -69,7 +69,7 @@ if __name__ == '__main__':
     if not os.path.exists('data_dump'):
         os.makedirs('data_dump')
 
-    picke_name = "data_dump/jobs_{}.p".format(datetime.datetime.today().strftime('%Y-%m-%d_%H%M'))
+    picke_name = "data_dump/jobs_{}.p".format(datetime.today().strftime('%Y-%m-%d_%H%M'))
     pickle.dump(jobs, open(picke_name, "wb" ))
     print_jobs(jobs)
 
@@ -79,6 +79,7 @@ if __name__ == '__main__':
     table = dynamodb.Table('JobInternships')
     exist_count = 0
     insert_count = 0
+    inserted_jobs = []
 
     for job in jobs:
         jobid = job.company.replace(' ', '') + '_' + job.title.replace(' ','')
@@ -90,10 +91,22 @@ if __name__ == '__main__':
                     'jobID': jobid,
                 }
             )
+
+            DATE_FORMAT = '%Y-%m-%d'
+            base_date = datetime.strptime(job.date, DATE_FORMAT)
+            date_1_before = base_date - timedelta(days=int(1))
+            date_1_before = date_1_before.strftime(DATE_FORMAT)
+
+            response2 = table.get_item(
+                Key={
+                    'date': date_1_before,
+                    'jobID': jobid,
+                }
+            )
         except ClientError as e:
             print(e.response['Error']['Message'])
         else:
-            if 'Item' in response:                      # If item exist
+            if 'Item' in response or 'Item' in response2:                      # If item exist
                 exist_count += 1
             else:                                       # If not insert it
                 insert_count += 1
@@ -107,10 +120,16 @@ if __name__ == '__main__':
                         'url': job.url,
                     }
                 )
+
+                inserted_jobs.append(job) # Keep track of what was inserted
             # print(json.dumps(response, indent=4, cls=DecimalEncoder))
+
+    for job in sorted(inserted_jobs, key= lambda job: job.date):
+        print(job)
 
     print("dups: {}".format(exist_count))
     print("inserted: {}".format(insert_count))
+
 
 
 

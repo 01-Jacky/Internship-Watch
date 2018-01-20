@@ -9,14 +9,14 @@ from flask import render_template
 import pickle
 from os import listdir
 from os.path import isfile, join
+import os
 
 from dal import db
 
 app = Flask(__name__)
-
+print("hello")
 @app.route("/")
 def hello(data=None):
-
     # Load the dictionary back from the pickle file.
     # jobs = pickle.load(open("data_dump/jobs_2017-12-24_0132.p", "rb"))
     # latest_file = ''
@@ -42,3 +42,7 @@ def hello(data=None):
 def zzz(data=None):
     return render_template('example.html')
 
+
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 5000))
+    app.run()
