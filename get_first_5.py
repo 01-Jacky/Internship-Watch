@@ -8,6 +8,7 @@ from datetime import datetime, timedelta
 from lib.job import Job
 import lib.downloader
 import lib.parser
+import lib.helpers
 
 # boto3
 import boto3
@@ -106,10 +107,14 @@ if __name__ == '__main__':
         except ClientError as e:
             print(e.response['Error']['Message'])
         else:
-            if 'Item' in response or 'Item' in response2:                      # If item exist
+            if 'Item' in response or 'Item' in response2:                       # If item exist
                 exist_count += 1
-            else:                                       # If not insert it
+            else:                                                               # If not insert it
                 insert_count += 1
+
+                today_date_time = datetime.today()                     # Setup creation/expiration times
+                today_plus_30 = today_date_time + timedelta(days=30)
+
                 response = table.put_item(
                     Item={
                         'date': job.date,
@@ -118,6 +123,8 @@ if __name__ == '__main__':
                         'title': job.title,
                         'location': job.location,
                         'url': job.url,
+                        'creation_epoch': int(today_date_time.timestamp()),
+                        'expiration_epoch': int(today_plus_30.timestamp())     # this allow us to setup automatic TTL in dynamodb
                     }
                 )
 

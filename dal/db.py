@@ -16,7 +16,12 @@ class DecimalEncoder(json.JSONEncoder):
 def get_jobs():
     jobs = []
 
-    dynamodb = boto3.resource('dynamodb', region_name='us-west-2', endpoint_url="https://dynamodb.us-west-2.amazonaws.com")
+    # Boto3 by default also looks in env variables for AWS_SECRET_ACCESS_KEY and AWS_ACCESS_KEY_ID
+    dynamodb = boto3.resource(
+        'dynamodb',
+        region_name='us-west-2',
+        endpoint_url="https://dynamodb.us-west-2.amazonaws.com"
+    )
 
     table = dynamodb.Table('JobInternships')
 

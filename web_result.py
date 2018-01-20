@@ -16,28 +16,9 @@ from dal import db
 app = Flask(__name__)
 
 @app.route("/")
-def hello_world(data=None):
-    print("hello logs")
-
-    return "hello world"
-
-@app.route("/home")
-def hello(data=None):
-    print("hello")
-
-    # Load the dictionary back from the pickle file.
-    # jobs = pickle.load(open("data_dump/jobs_2017-12-24_0132.p", "rb"))
-    # latest_file = ''
-    # path = 'data_dump/'
-    # for f in listdir(path):
-    #     if isfile(join(path, f)) and f > latest_file:
-    #         latest_file = path + f
-    # jobs = pickle.load(open(latest_file, "rb"))
-    # print(latest_file)
-
-    print("doing db.get_jobs()...")
+def display_jobs(data=None):
+    print("Fetching job from db...")
     jobs = db.get_jobs()
-    print("Got em...")
 
     # discard >30 days
     fresh_jobs = [job for job in jobs]
