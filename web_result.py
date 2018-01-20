@@ -15,6 +15,7 @@ from dal import db
 
 app = Flask(__name__)
 
+@app.route("/")                         # also landing page for now
 @app.route("/intern")
 def display_jobs(data=None):
     print("Fetching job from db...")
@@ -22,7 +23,6 @@ def display_jobs(data=None):
 
     # discard >30 days
     fresh_jobs = [job for job in jobs]
-
     fresh_jobs = sorted(fresh_jobs, key=lambda job: job['location'].lower())
     fresh_jobs = sorted(fresh_jobs, key=lambda job: job['company'].lower())
     # jobs = sorted(jobs, key=lambda job : job.date.lower())

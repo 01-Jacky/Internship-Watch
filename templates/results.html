@@ -14,6 +14,16 @@
     <!-- HTML Table sorting -->
     <!--<script type="text/javascript" src="static/js/jquery-latest.js"></script>-->
     <!--<script type="text/javascript" src="static/js/jquery.tablesorter.js"></script>-->
+    <script>
+    $(document).ready(function()
+        {
+            $('#myTable').DataTable({
+                "pageLength": 500,
+                "lengthMenu": [ 50, 100, 200, 500]
+            });
+        }
+    );
+    </script>
 </head>
 <body>
     <!--<table id="myTable" class="tablesorter pure-table-bordered">-->
@@ -21,7 +31,7 @@
         <h1>Latest CS Internship Postings</h1>
     </header>
     <div class="table-area">
-        <table id="myTable" class="tablesorter pure-table-bordered">
+        <table id="myTable" class="tablesorter hover">
         <thead>
             <tr>
             <th>Company</th>
@@ -38,28 +48,14 @@
                 <td>{{ job['title']}}</td>
                 <td>{{ job['location'][:25] }}</td>
                 <td>{{ job['date'] }}</td>
+                <td><a href="{{ job['url']}}">Posting</a></td>
                 <td>
                     <a href="{{ 'https://www.google.com/search?q={}'.format('+'.join(job['company'].split() + ["intern", "salary"])) }}">Salary</a>
-                </td>
-                <td>
-                    <a href="{{ job['url']}}">Posting</a>
                 </td>
             </tr>
         {% endfor %}
         </table>
     </div>
-
-<script>
-    $(document).ready(function()
-        {
-            $('#myTable').DataTable({
-                "pageLength": 500,
-                "lengthMenu": [ 50, 100, 200, 500]
-            });
-        }
-    );
-</script>
-
 </body>
 </html>
 

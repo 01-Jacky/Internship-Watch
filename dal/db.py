@@ -25,6 +25,7 @@ def get_jobs():
 
     table = dynamodb.Table('JobInternships')
 
+
     fe = Key('date').gte('2018-01-01')
     # pe = "#yr, title, info.rating"
     # Expression Attribute Names for Projection Expression only.
