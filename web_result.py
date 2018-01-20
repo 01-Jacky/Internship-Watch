@@ -15,10 +15,10 @@ from dal import db
 
 app = Flask(__name__)
 
-
 @app.route("/")
 def hello(data=None):
-    print("Main route called")
+    print("hello")
+
     # Load the dictionary back from the pickle file.
     # jobs = pickle.load(open("data_dump/jobs_2017-12-24_0132.p", "rb"))
     # latest_file = ''
