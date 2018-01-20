@@ -15,7 +15,7 @@ from dal import db
 
 app = Flask(__name__)
 
-@app.route("/")
+@app.route("/intern")
 def display_jobs(data=None):
     print("Fetching job from db...")
     jobs = db.get_jobs()
