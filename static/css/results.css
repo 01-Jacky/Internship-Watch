@@ -13,8 +13,16 @@ h1{
 }
 
 /* content section */
+a {
+    text-decoration: none;
+}
+
 .table-area{
     margin: 25px 125px;
+}
+
+#results-table{
+    display:none;   /* to avoid displaying raw html table before datatable library kicks in */
 }
 
 table {

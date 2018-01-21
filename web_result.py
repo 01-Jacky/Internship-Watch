@@ -10,6 +10,7 @@ import pickle
 from os import listdir
 from os.path import isfile, join
 import os
+import time
 
 from dal import db
 
@@ -19,13 +20,26 @@ app = Flask(__name__)
 @app.route("/intern")
 def display_jobs(data=None):
     print("Fetching job from db...")
-    jobs = db.get_jobs()
+    start = time.time()
 
-    # discard >30 days
-    fresh_jobs = [job for job in jobs]
-    fresh_jobs = sorted(fresh_jobs, key=lambda job: job['location'].lower())
-    fresh_jobs = sorted(fresh_jobs, key=lambda job: job['company'].lower())
-    # jobs = sorted(jobs, key=lambda job : job.date.lower())
+    jobs = db.get_jobs()
+    end = time.time()
+    print('Got result from db in {} seconds'.format(end - start))
+
+    # Post processing
+    fresh_jobs = []
+    for job in jobs:
+        index = job['location'].find('(')       # New York, NY 10005 (Financial District) -> strip part in ()
+        if index > -1:
+            job['location'] = job['location'][:index]
+        fresh_jobs.append(job)
+
+    # Take care of sorting via data table library in the front end
+    # fresh_jobs = sorted(fresh_jobs, key=lambda job: job['location'].lower())
+    # fresh_jobs = sorted(fresh_jobs, key=lambda job: job['company'].lower())
+    # fresh_jobs = sorted(fresh_jobs, key=lambda job: job['date'])
+    # for job in fresh_jobs:
+    #     print(job['date'])
 
     return render_template('results.html', jobs_arr=fresh_jobs)
 

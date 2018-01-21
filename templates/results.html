@@ -17,10 +17,14 @@
     <script>
     $(document).ready(function()
         {
-            $('#myTable').DataTable({
-                "pageLength": 500,
-                "lengthMenu": [ 50, 100, 200, 500]
+            $('#results-table').DataTable({
+                "pageLength": 100,
+                "lengthMenu": [ 50, 100, 200, 500],
+                "deferRender": true,
+                "order": [[ 3, "desc" ], [ 2, 'asc' ], [ 1, 'asc' ]],       // date desc, location asc, company asc
             });
+
+            $('#results-table').show();
         }
     );
     </script>
@@ -31,15 +35,15 @@
         <h1>Latest CS Internship Postings</h1>
     </header>
     <div class="table-area">
-        <table id="myTable" class="tablesorter hover">
+        <table id="results-table" class="tablesorter hover">
         <thead>
             <tr>
             <th>Company</th>
             <th>Title</th>
             <th>Location</th>
             <th>Date</th>
-            <th>Glassdoor</th>
             <th>Posting</th>
+            <th>Glassdoor</th>
             </tr>
         </thead>
         {% for job in jobs_arr %}
