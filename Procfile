@@ -1,1 +1,1 @@
-web: python web_result.py
+web: python app/web_result.py

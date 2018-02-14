@@ -1,6 +1,6 @@
 """
 In shell:
-set FLASK_APP=web_result.py
+set FLASK_APP=app/web_result.py
 flask run
 """
 
