@@ -6,13 +6,12 @@ flask run
 
 from flask import Flask
 from flask import render_template
-import pickle
 from os import listdir
 from os.path import isfile, join
 import os
 import time
 
-from dal import db
+from dal import db      # data access layer
 
 app = Flask(__name__)
 
