@@ -1,8 +1,6 @@
 # Internship-Watch
 
-Quickly glance through many latest cs related internship postings from sites like indeed.
-
-Currently running at: http://internship-watch.herokuapp.com/home
+Quickly view, sort, search through list of latest cs related internship postings from indeed.com.  
 
 ## Getting Started 
 
