@@ -1,6 +1,8 @@
 # Internship-Watch
 
-Quickly view, sort, search through list of latest cs related internship postings from indeed.com.  
+Quickly view, sort, search through list of latest cs related internship postings from indeed.com. Internship postings scrapped daily.
+
+Warning: The Heroku free server that the site sits on goes to sleep after 30min of inactivity. So if you're unlucky any no one hit the page in the past 30 min, you might have to wait up to ~30 seconds for the Heroku dyno to spin up. Looking to migrate to an EC2 or raspiberry pi soon so it can be up 24/7.
 
 ## Getting Started 
 
